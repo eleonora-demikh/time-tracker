@@ -1,9 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 
-export const Close = () => {
+type Props = {
+  className?: string | "";
+};
+
+export const Close: FC<Props> = ({ className }) => {
   return (
     <svg
-      className='fill-slate-500 absolute right-2 top-0.5'
+      className={
+        className ? className : "fill-slate-500 absolute right-2 top-0.5"
+      }
       width='20'
       height='20'
     >
