@@ -9,21 +9,31 @@ import { DropdownList } from '../DropdownList/DropdownList';
 import { UserContext } from '../../context/userContext';
 
 type Props = {
-  data: User[]
+  data: User[],
+  handleSelectUser: React.Dispatch<React.SetStateAction<User | null>>,
+  selectedUser: User | null,
 };
 
-export const Dropdown: React.FC<Props> = ({data}) => {
+export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}) => {
   const context = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [placeholder, setPlaceholder] = useState('');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [query, setQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (context.user?.username !== undefined) {
+      updateSearchParams(context.user?.username as string);
+    }
     setPlaceholder(searchParams.get("user") || "Select the team member...");
-  }, [data]);
+  }, []);
+
+  useEffect(() => {
+    if (context.user === undefined)
+    updateSearchParams('')
+  }, [context.user]);
 
   const visibleUsers = useMemo(() => {
     return filterUsers(query, data)
@@ -52,13 +62,13 @@ export const Dropdown: React.FC<Props> = ({data}) => {
     setSearchParams(newSearchParams);
   };
 
-  const handleSelectUser = (user: User) => {
-    setSelectedUser(user);
+  const handleSelectItem = (user: User) => {
+    context.updateUser(user);
+    handleSelectUser(user);
     setPlaceholder(user.username);
     setQuery('');
     updateSearchParams(user.username);
     setIsOpen(false);
-    context.updateUser(user);
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +94,7 @@ export const Dropdown: React.FC<Props> = ({data}) => {
           <DropdownList
             users={visibleUsers}
             selectedUser={selectedUser}
-            handleClick={handleSelectUser}
+            handleClick={handleSelectItem}
           />
         )}
       </div>

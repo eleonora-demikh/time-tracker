@@ -40,11 +40,12 @@ export const UserInfoPage: React.FC = () => {
 
   useEffect(() => {
     setSelectedUser(context.user);
-  }, [context]);
+
+  }, [context.user?.username]);
 
   return (
     <>
-      <Dropdown data={users} />
+      <Dropdown data={users} handleSelectUser={setSelectedUser} selectedUser={selectedUser}/>
       {!selectedUser ? (
         <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>
           Select the user first

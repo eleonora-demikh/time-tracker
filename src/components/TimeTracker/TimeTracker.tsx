@@ -1,47 +1,27 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { PlusMinus } from '../UI/PlusMinus';
 import { ArrowDown } from '../UI/ArrowDown';
 import { Close } from '../UI/Close';
 import { TrackForm } from '../TrackForm/TrackForm';
+import { WorkingHours } from '../WorkingHours/WorkingHours';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import { NoteType } from '../../types/Note';
-import { UserContext } from '../../context/userContext';
 
 export const TimeTracker: React.FC = () => {
   const [isOpenedTracker, setIsOpenedTracker] = useState(false);
   const [isOpenedLogs, setIsOpenedLogs] = useState(false);
-  const [amountOfTime, setAmountOfTime] = useState(0);
+  const [notes, setNotes] = useLocalStorage("notes", []);
   const iconsClass = "fill-slate-300 absolute right-3 top-1.5";
-  const context = useContext(UserContext);
-  const storedNotesJSON = localStorage.getItem("notes");
-  const [data, setData] = useState(storedNotesJSON);
- 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setData(storedNotesJSON);
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
 
   useEffect(() => {
+    const storedNotesJSON = localStorage.getItem("notes");
     const storedNotes: NoteType[] | [] = storedNotesJSON
       ? JSON.parse(storedNotesJSON)
       : [];
 
-    if (storedNotes.length !== 0) {
-      const findUserNotes = storedNotes.filter(
-        (note: NoteType) =>
-          note.username === context.user?.username
-      );
-
-      const total = findUserNotes.reduce((acc, user) => acc + Number(user.tracker.time), 0);
-      setAmountOfTime(total);
-    };
-  }, [context, data])
+    setNotes(storedNotes);
+  }, []);
 
   return (
     <section>
@@ -57,21 +37,7 @@ export const TimeTracker: React.FC = () => {
       </h2>
       {isOpenedTracker && (
         <div className='grid text-sm text-slate-600 overflow-hidden'>
-          <section className='mb-2 border border-slate-100 rounded-lg mt-2'>
-            <h3 className='flex items-center justify-between w-full text-left font-semibold border-b border-slate-100 p-2'>
-              Working hours
-            </h3>
-            <div className='grid text-sm text-slate-600 overflow-hidden'>
-              <div className='overflow-hidden'>
-                <ul className='p-3'>
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Total time:</span>
-                    <span className='font-light'>{`${amountOfTime} hours`}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
+          <WorkingHours notes={notes} />
 
           <button
             type='button'
@@ -88,9 +54,7 @@ export const TimeTracker: React.FC = () => {
             )}
           </button>
 
-          {isOpenedLogs && (
-            <TrackForm />
-          )}
+          {isOpenedLogs && <TrackForm handleAddNote={setNotes} />}
         </div>
       )}
     </section>
