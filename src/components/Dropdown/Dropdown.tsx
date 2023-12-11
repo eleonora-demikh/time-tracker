@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from 'react-router-dom';
 import useClickOutside from '../../hooks/useClickOutside';
 import { User } from '../../types/User';
@@ -6,16 +6,18 @@ import { filterUsers } from '../../helpers/usersFilter';
 import { ArrowDown } from '../UI/ArrowDown';
 import { Close } from '../UI/Close';
 import { DropdownList } from '../DropdownList/DropdownList';
+import { UserContext } from '../../context/userContext';
 
 type Props = {
   data: User[]
 };
 
 export const Dropdown: React.FC<Props> = ({data}) => {
+  const context = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [placeholder, setPlaceholder] = useState('Select the team member...');
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [query, setQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -50,12 +52,13 @@ export const Dropdown: React.FC<Props> = ({data}) => {
     setSearchParams(newSearchParams);
   };
 
-  const handleSelectUser = (userName: string) => {
-    setSelectedUser(userName);
-    setPlaceholder(userName);
+  const handleSelectUser = (user: User) => {
+    setSelectedUser(user);
+    setPlaceholder(user.username);
     setQuery('');
-    updateSearchParams(userName);
+    updateSearchParams(user.username);
     setIsOpen(false);
+    context.updateUser(user);
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
