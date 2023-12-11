@@ -34,8 +34,10 @@ export const TrackForm: React.FC = () => {
       })
         .then((response) => {
           if(response.ok) {
-            const storedNote = {username: context.user?.username, tracker: formData}
-            localStorage.setItem("notes", JSON.stringify(storedNote));
+            const existingArrayJSON = localStorage.getItem("notes");
+            const existingArray = existingArrayJSON ? JSON.parse(existingArrayJSON) : [];
+            const storedNote = {username: context.user?.username, userId: context.user?.id, tracker: formData}
+            localStorage.setItem("notes", JSON.stringify([...existingArray, storedNote]));
           }
         })
     } catch(error) {
