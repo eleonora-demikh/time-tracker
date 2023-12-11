@@ -1,15 +1,47 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { PlusMinus } from '../UI/PlusMinus';
 import { ArrowDown } from '../UI/ArrowDown';
 import { Close } from '../UI/Close';
 import { TrackForm } from '../TrackForm/TrackForm';
+import { NoteType } from '../../types/Note';
+import { UserContext } from '../../context/userContext';
 
 export const TimeTracker: React.FC = () => {
   const [isOpenedTracker, setIsOpenedTracker] = useState(false);
   const [isOpenedLogs, setIsOpenedLogs] = useState(false);
-  const currentDate = new Date().toISOString().split("T")[0];
+  const [amountOfTime, setAmountOfTime] = useState(0);
   const iconsClass = "fill-slate-300 absolute right-3 top-1.5";
+  const context = useContext(UserContext);
+  const storedNotesJSON = localStorage.getItem("notes");
+  const [data, setData] = useState(storedNotesJSON);
+ 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setData(storedNotesJSON);
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const storedNotes: NoteType[] | [] = storedNotesJSON
+      ? JSON.parse(storedNotesJSON)
+      : [];
+
+    if (storedNotes.length !== 0) {
+      const findUserNotes = storedNotes.filter(
+        (note: NoteType) =>
+          note.username === context.user?.username
+      );
+
+      const total = findUserNotes.reduce((acc, user) => acc + Number(user.tracker.time), 0);
+      setAmountOfTime(total);
+    };
+  }, [context, data])
 
   return (
     <section>
@@ -33,8 +65,8 @@ export const TimeTracker: React.FC = () => {
               <div className='overflow-hidden'>
                 <ul className='p-3'>
                   <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Amount of time:</span>
-                    <span className='font-light'>Alicedfgdsfgdsgdgsd</span>
+                    <span className='font-medium mr-3'>Total time:</span>
+                    <span className='font-light'>{`${amountOfTime} hours`}</span>
                   </li>
                 </ul>
               </div>

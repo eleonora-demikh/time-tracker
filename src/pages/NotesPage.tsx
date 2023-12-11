@@ -42,7 +42,7 @@ export const NotesPage: React.FC = () => {
       ? (
         <p>No notes to show</p>
       ) : (
-        notes.map(note => <Note note={note} key={note.}/>)
+        notes.map(note => <Note note={note} key={note.id}/>)
       )}
     </article>
   );

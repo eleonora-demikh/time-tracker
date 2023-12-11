@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 // import { User } from "../../types/User";
 import { PlusMinus } from '../UI/PlusMinus';
+import { NoteType } from '../../types/Note';
 
 type Props = {
-
+  note: NoteType
 };
 
-export const Note: React.FC<Props> = () => {
+export const Note: React.FC<Props> = ({ note }) => {
   const [isOpened, setIsOpened] = useState(false);
 
   return (
@@ -15,8 +16,8 @@ export const Note: React.FC<Props> = () => {
         className='h-8 border border-slate-200 rounded-lg text-xs flex justify-between p-2'
         onClick={() => setIsOpened((prev) => !prev)}
       >
-        <span>Date: 12-12-12</span>
-        <span>Username: Alice</span>
+        <span>{`Date: ${note.tracker.date}`}</span>
+        <span>{note.username}</span>
         <PlusMinus isVisible={isOpened} />
       </div>
       {isOpened && (
@@ -25,29 +26,23 @@ export const Note: React.FC<Props> = () => {
             <ul className='p-3'>
               <li className='flex flex-row'>
                 <span className='font-medium mr-3'>Name:</span>
-                <span className='font-light'>name</span>
+                <span className='font-light'>{note.name}</span>
               </li>
 
               <li className='flex flex-row'>
                 <span className='font-medium mr-3'>Project:</span>
-                <span className='font-light'>proj name</span>
+                <span className='font-light'>{note.project}</span>
               </li>
 
               <li className='flex flex-row'>
                 <span className='font-medium mr-3'>Time spent</span>
-                <span className='font-light'>0 hours</span>
+                <span className='font-light'>{`${note.tracker.time} hours`}</span>
               </li>
 
               <li className='flex flex-row'>
                 <span className='font-medium mr-3'>Details</span>
                 <span className='font-light'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Explicabo eos maiores iusto illo labore fugit quam iure
-                  consequatur? Qui quasi magni harum eius voluptate voluptatum
-                  fugit nobis. Quis iure voluptate ipsa illo ratione nulla
-                  accusamus, saepe expedita, provident iste exercitationem
-                  reiciendis nisi aliquid! Incidunt unde temporibus, perferendis
-                  ipsa quasi autem nulla expedita maxime veritatis?
+                  {note.tracker.details}
                 </span>
               </li>
             </ul>

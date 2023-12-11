@@ -23,7 +23,8 @@ export const TrackForm: React.FC = () => {
     if (storedNotes.length > 0) {
       const existingNoteIndex = storedNotes.findIndex(
         (note: NoteType) =>
-          note.username === updatedNote.username && note?.tracker?.date === updatedNote.tracker.date
+          note.username === updatedNote.username &&
+          note?.tracker?.date === updatedNote.tracker.date
       );
 
       if (existingNoteIndex !== -1) {
@@ -35,12 +36,17 @@ export const TrackForm: React.FC = () => {
           JSON.stringify([...storedNotes, updatedNote])
         );
       }
+    } else {
+      localStorage.setItem(
+        "notes",
+        JSON.stringify([...storedNotes, updatedNote])
+      );
     }
   }
 
   const handleSubmit = async () => {
     try {
-      const URL = `https://jsonplaceholder.typicode.com/users/${userId}`;
+      const URL = `https://jsonplaceholder.typicode.com/users/${context.user?.id}`;
 
       await fetch(URL, {
         method: 'PUT',
@@ -50,7 +56,7 @@ export const TrackForm: React.FC = () => {
         },
       })
         .then((response) => {
-          if(response.ok) {
+          if(response.ok && context.user) {
             const newNote = {
               id: Date.now(), 
               name: context.user?.name, 
