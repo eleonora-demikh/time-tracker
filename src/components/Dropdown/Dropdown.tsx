@@ -16,13 +16,13 @@ export const Dropdown: React.FC<Props> = ({data}) => {
   const context = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
-  const [placeholder, setPlaceholder] = useState('Select the team member...');
+  const [placeholder, setPlaceholder] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [query, setQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setPlaceholder(searchParams.get('user') || '')
+    setPlaceholder(searchParams.get("user") || "Select the team member...");
   }, [data]);
 
   const visibleUsers = useMemo(() => {

@@ -43,6 +43,8 @@ export const TrackForm: React.FC = () => {
     } catch(error) {
       console.error(error);
     };
+
+    dispatch({ type: "RESET" });
   }
 
   return (
@@ -57,6 +59,7 @@ export const TrackForm: React.FC = () => {
           type='date'
           max={currentDate}
           required
+          value={formData.date}
           onChange={(e) => handleFieldChange("date", e.target.value)}
         />
 
@@ -71,6 +74,7 @@ export const TrackForm: React.FC = () => {
           max='24'
           placeholder='0 hours'
           required
+          value={formData.time}
           onChange={(e) => handleFieldChange("time", e.target.value)}
         />
       </div>
@@ -83,11 +87,12 @@ export const TrackForm: React.FC = () => {
           id='comment'
           className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-full w-60 shrink-0 focus:outline-none'
           onChange={(e) => handleFieldChange("details", e.target.value)}
+          value={formData.details}
         />
       </div>
 
       <button
-        type='button'
+        type='submit'
         className='p-2 font-semibold border border-slate-200 rounded-lg text-slate-800 w-6/12 m-auto hover:bg-slate-100 mt-4'
       >
         Add note
