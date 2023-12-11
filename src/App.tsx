@@ -41,7 +41,7 @@ function App() {
   return (
     <div className='flex justify-center flex-col font-medium text-sm w-screen max-w-screen-md'>
       <Dropdown data={users} />
-      <UserInfo data={users} />
+      <UserInfo />
     </div>
   );
 }
