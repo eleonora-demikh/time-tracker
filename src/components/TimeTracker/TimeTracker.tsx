@@ -33,15 +33,8 @@ export const TimeTracker: React.FC = () => {
               <div className='overflow-hidden'>
                 <ul className='p-3'>
                   <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Per week:</span>
+                    <span className='font-medium mr-3'>Amount of time:</span>
                     <span className='font-light'>Alicedfgdsfgdsgdgsd</span>
-                  </li>
-
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Per mounth:</span>
-                    <a className='font-light' href='/'>
-                      Alicedfgdsfgdsgdgsd.com
-                    </a>
                   </li>
                 </ul>
               </div>

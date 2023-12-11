@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { formReducer, initialState } from '../../helpers/formReducer';
+import { NoteType } from '../../types/Note';
 
 export const TrackForm: React.FC = () => {
   const currentDate = new Date().toISOString().split("T")[0];
@@ -15,13 +16,29 @@ export const TrackForm: React.FC = () => {
     });
   };
 
-  const handleSubmit = async () => {
-    const userId = context?.user?.id;
+  const updateNotes = (updatedNote: NoteType) => {
+    const storedNotesJSON = localStorage.getItem("notes");
+    const storedNotes: NoteType[] | [] = storedNotesJSON ? JSON.parse(storedNotesJSON) : [];
 
-    if(userId) {
-      handleFieldChange("userId", userId)
+    if (storedNotes.length > 0) {
+      const existingNoteIndex = storedNotes.findIndex(
+        (note: NoteType) =>
+          note.username === updatedNote.username && note?.tracker?.date === updatedNote.tracker.date
+      );
+
+      if (existingNoteIndex !== -1) {
+        storedNotes[existingNoteIndex] = updatedNote;
+        localStorage.setItem("notes", JSON.stringify(storedNotes));
+      } else {
+        localStorage.setItem(
+          "notes",
+          JSON.stringify([...storedNotes, updatedNote])
+        );
+      }
     }
+  }
 
+  const handleSubmit = async () => {
     try {
       const URL = `https://jsonplaceholder.typicode.com/users/${userId}`;
 
@@ -34,10 +51,14 @@ export const TrackForm: React.FC = () => {
       })
         .then((response) => {
           if(response.ok) {
-            const existingArrayJSON = localStorage.getItem("notes");
-            const existingArray = existingArrayJSON ? JSON.parse(existingArrayJSON) : [];
-            const storedNote = {username: context.user?.username, userId: context.user?.id, tracker: formData}
-            localStorage.setItem("notes", JSON.stringify([...existingArray, storedNote]));
+            const newNote = {
+              id: Date.now(), 
+              name: context.user?.name, 
+              username: context.user?.username, 
+              project: context.user?.company.name, 
+              tracker: formData
+            }
+            updateNotes(newNote);
           }
         })
     } catch(error) {

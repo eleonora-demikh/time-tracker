@@ -1,5 +1,4 @@
-type FormState = {
-  userId?: string,
+export type FormState = {
   date: string;
   time: number;
   details: string;
@@ -10,7 +9,7 @@ type FormAction =
 | {type: 'TRIM'}
 | { type: 'RESET' };
 
-export const initialState: Omit<FormState, 'userId'> = {
+export const initialState: FormState = {
   date: '',
   time: 0,
   details: '',

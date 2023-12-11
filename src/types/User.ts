@@ -1,5 +1,3 @@
-import { TimeTracker } from './TimeTracker'
-
 export interface User {
   id: number,
   name: string,
@@ -22,5 +20,4 @@ export interface User {
     catchPhrase: string,
     bs: string
   },
-  timeTracker?: TimeTracker,
 }
