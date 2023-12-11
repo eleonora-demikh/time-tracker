@@ -3,6 +3,7 @@ import { useState } from "react";
 import { PlusMinus } from '../UI/PlusMinus';
 import { ArrowDown } from '../UI/ArrowDown';
 import { Close } from '../UI/Close';
+import { TrackForm } from '../TrackForm/TrackForm';
 
 export const TimeTracker: React.FC = () => {
   const [isOpenedTracker, setIsOpenedTracker] = useState(false);
@@ -63,48 +64,7 @@ export const TimeTracker: React.FC = () => {
           </button>
 
           {isOpenedLogs && (
-            <section className='mb-2 border border-slate-100 rounded-lg mt-2 p-2 flex flex-row flex-wrap justify-between'>
-              <div className='flex flex-col '>
-                <label htmlFor='dateInput' className='text-xs'>
-                  Choose date:
-                </label>
-                <input
-                  id='dateInput'
-                  className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-7 w-60 shrink-0 focus:outline-none'
-                  type='date'
-                  max={currentDate}
-                />
-
-                <label htmlFor='timeInput' className='text-xs mt-3'>
-                  Time spent:
-                </label>
-                <input
-                  id='timeInput'
-                  className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-7 w-60 shrink-0 focus:outline-none'
-                  type='number'
-                  min='0'
-                  max='24'
-                  placeholder='0 hours'
-                />
-              </div>
-
-              <div className='flex flex-col mb-3'>
-                <label htmlFor='comment' className='text-xs mt-3'>
-                  Details:
-                </label>
-                <textarea
-                  id='comment'
-                  className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-16 w-60 shrink-0 focus:outline-none'
-                />
-              </div>
-
-              <button
-                type='button'
-                className='p-2 font-semibold border border-slate-200 rounded-lg text-slate-800 w-6/12 m-auto hover:bg-slate-100'
-              >
-                Add new entry
-              </button>
-            </section>
+            <TrackForm />
           )}
         </div>
       )}
