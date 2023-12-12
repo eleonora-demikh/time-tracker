@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { formReducer, initialState } from '../../helpers/formReducer';
 import { NoteType } from '../../types/Note';
 
 type Props = {
-  handleAddNote: any;
+  handleAddNote: React.Dispatch<React.SetStateAction<NoteType[]>>;
 };
 
 export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
@@ -21,15 +21,15 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
     setCurrentDate(localDate);
   }, []);
 
-  const handleFieldChange = (field: string, value: string | number) => {
+  const handleFieldChange = useCallback((field: string, value: string | number) => {
     dispatch({
       type: "UPDATE_FIELD",
       field,
       value,
     });
-  };
+  }, []);
 
-  const updateNotes = (updatedNote: NoteType) => {
+  const updateNotes = useCallback((updatedNote: NoteType) => {
     const storedNotesJSON = localStorage.getItem("notes");
     const storedNotes: NoteType[] | [] = storedNotesJSON
       ? JSON.parse(storedNotesJSON)
@@ -51,30 +51,32 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
     } else {
       handleAddNote((prev) => [...prev, updatedNote]);
     }
-  };
+  }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       const URL = `https://jsonplaceholder.typicode.com/users/${context.user?.id}`;
 
-      await fetch(URL, {
+      const response = await fetch(URL, {
         method: "PUT",
         body: JSON.stringify({ ...context.user, tracker: formData }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      }).then((response) => {
-        if (response.ok && context.user) {
-          const newNote: NoteType = {
-            id: Date.now(),
-            name: context.user?.name,
-            username: context.user?.username,
-            project: context.user?.company.name,
-            tracker: formData,
-          };
-          updateNotes(newNote);
-        }
       });
+
+      if (response.ok && context.user) {
+        const newNote: NoteType = {
+          id: Date.now(),
+          name: context.user?.name,
+          username: context.user?.username,
+          project: context.user?.company.name,
+          tracker: formData,
+        };
+        updateNotes(newNote);
+      }
     } catch (error) {
       console.error(error);
     }

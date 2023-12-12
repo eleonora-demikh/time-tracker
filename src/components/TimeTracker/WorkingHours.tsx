@@ -4,7 +4,7 @@ import { UserContext } from "../../context/userContext";
 import { InfoField } from '../InfoField/InfoField';
 
 type Props = {
-  notes: NoteType[] | [],
+  notes: NoteType[],
 }
 
 export const WorkingHours: React.FC<Props> = ({notes}) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import { uppercaseFirstLetter } from '../../helpers/uppercaseFirstLetter';
-import { InfoField } from '../InfoField/InfoField';
+import { uppercaseFirstLetter } from '../../../helpers/uppercaseFirstLetter';
+import { InfoField } from '../../InfoField/InfoField';
 
 type Props = {
   title: string | undefined;

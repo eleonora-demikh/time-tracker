@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { User } from '../../types/User';
-import { PlusMinus } from '../UI/PlusMinus';
-import { AdditionalInfoField } from '../AdditionalInfoField/AdditionalInfoField';
+import { User } from '../../../types/User';
+import { PlusMinus } from '../../UI/PlusMinus';
+import { AdditionalInfoField } from './AdditionalInfoField';
 
 type Props = {
   selectedUser: User | null;
@@ -16,7 +16,7 @@ export const AdditionalInfo:React.FC<Props> =({ selectedUser }) => {
       email: selectedUser?.email,
       website: selectedUser?.website,
     },
-    adress: {
+    address: {
       city: selectedUser?.address.city,
       street: selectedUser?.address.street,
     }

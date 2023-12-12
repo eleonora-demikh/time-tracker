@@ -4,15 +4,15 @@ import useClickOutside from '../../hooks/useClickOutside';
 import { User } from '../../types/User';
 import { UserContext } from '../../context/userContext';
 import { filterUsers } from '../../helpers/usersFilter';
-import { DropdownList } from '../DropdownList/DropdownList';
-import { DropdownInput } from '../DropdownInput/DropdownInput';
+import { DropdownList } from './DropdownList';
+import { DropdownInput } from './DropdownInput';
 
 type Props = {
   data: User[],
 };
 
 export const Dropdown: React.FC<Props> = ({ data }) => {
-  const context = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [placeholder, setPlaceholder] = useState('');
@@ -20,9 +20,9 @@ export const Dropdown: React.FC<Props> = ({ data }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (context.user?.username !== undefined) {
-      updateSearchParams(context.user?.username as string);
-      setPlaceholder(context.user.username);
+    if (user?.username !== undefined) {
+      updateSearchParams(user?.username as string);
+      setPlaceholder(user.username);
     } else {
       updateSearchParams("");
       setPlaceholder("Select the team member...");
@@ -40,11 +40,11 @@ export const Dropdown: React.FC<Props> = ({ data }) => {
     }, [])
   );
 
-  const toggleDropdown = () => {
+  const toggleDropdown = useCallback(() => {
     setIsOpen(!isOpen);
-  };
+  }, []);
 
-  const updateSearchParams = (newUser: string) => {
+  const updateSearchParams = useCallback((newUser: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
 
     if (newUser !== "") {
@@ -54,10 +54,10 @@ export const Dropdown: React.FC<Props> = ({ data }) => {
     }
 
     setSearchParams(newSearchParams);
-  };
+  }, []);
 
   const handleSelectItem = useCallback((user: User) => {
-    context.updateUser(user);
+    updateUser(user);
     setPlaceholder(user.username);
     setQuery('');
     updateSearchParams(user.username);

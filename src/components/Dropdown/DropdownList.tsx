@@ -10,11 +10,11 @@ type Props = {
 
 export const DropdownList:FC<Props> = ({ users, handleClick }) => {
   const [userChecked, setUserChecked] = useState('')
-  const context = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(()=>{
-    if (context.user?.username !== undefined) {
-      setUserChecked(context.user?.username);
+    if (user?.username !== undefined) {
+      setUserChecked(user?.username);
     }
   }, [])
 

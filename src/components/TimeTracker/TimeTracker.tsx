@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { NoteType } from '../../types/Note';
 import { User } from '../../types/User';
-import { WorkingHours } from '../WorkingHours/WorkingHours';
-import { TrackForm } from '../TrackForm/TrackForm';
+import { WorkingHours } from './WorkingHours';
+import { TrackForm } from './TrackForm';
 import { PlusMinus } from '../UI/PlusMinus';
 import { ArrowDown } from '../UI/ArrowDown';
 import { Close } from '../UI/Close';
@@ -15,12 +15,12 @@ type Props = {
 export const TimeTracker: React.FC<Props> = ({selectedUser}) => {
   const [isOpenedTracker, setIsOpenedTracker] = useState(false);
   const [isOpenedLogs, setIsOpenedLogs] = useState(false);
-  const [notes, setNotes] = useLocalStorage("notes", []);
+  const [notes, setNotes] = useLocalStorage<NoteType[]>("notes", []);
   const iconsClass = "fill-slate-300 absolute right-3 top-1.5";
 
   useEffect(() => {
     const storedNotesJSON = localStorage.getItem("notes");
-    const storedNotes: NoteType[] | [] = storedNotesJSON
+    const storedNotes: NoteType[] = storedNotesJSON
       ? JSON.parse(storedNotesJSON)
       : [];
 

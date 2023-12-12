@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ArrowDown } from "../UI/ArrowDown";
 import { Close } from "../UI/Close";
 
@@ -27,10 +27,10 @@ export const DropdownInput: React.FC<Props> = ({
     }
   }, [isOpen]);
 
-  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQueryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value.trim();
     handleChange(newQuery);
-  };
+  }, [handleChange]);
 
   return (
     <div className='flex space-x-5 relative w-320' onClick={handleToggle}>

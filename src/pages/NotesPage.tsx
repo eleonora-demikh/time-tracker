@@ -3,11 +3,11 @@ import { NoteType } from '../types/Note';
 import { Note } from '../components/Note/Note';
 
 export const NotesPage: React.FC = () => {
-  const [notes, setNotes] = useState<NoteType[] | []>([])
+  const [notes, setNotes] = useState<NoteType[]>([])
 
   useEffect(() => {
     const storedNotesJSON = localStorage.getItem("notes");
-    const storedNotes: NoteType[] | [] = storedNotesJSON
+    const storedNotes: NoteType[] = storedNotesJSON
       ? JSON.parse(storedNotesJSON)
       : [];
 

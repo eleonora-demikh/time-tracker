@@ -1,6 +1,6 @@
 import React from "react";
-import { User } from '../../types/User';
-import { InfoField } from '../InfoField/InfoField';
+import { User } from '../../../types/User';
+import { InfoField } from '../../InfoField/InfoField';
 
 type Props = {
   selectedUser: User | null;
