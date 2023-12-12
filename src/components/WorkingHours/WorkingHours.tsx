@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NoteType } from "../../types/Note";
 import { UserContext } from "../../context/userContext";
+import { InfoField } from '../InfoField/InfoField';
 
 type Props = {
   notes: NoteType[] | [],
@@ -10,29 +10,9 @@ type Props = {
 export const WorkingHours: React.FC<Props> = ({notes}) => {
   const [amountOfTime, setAmountOfTime] = useState(0);
   const context = useContext(UserContext);
-  // const storedNotesJSON = localStorage.getItem("notes");
-
-  // const amountChange = () => {
-  //   const storedNotes: NoteType[] | [] = storedNotesJSON
-  //     ? JSON.parse(storedNotesJSON)
-  //     : [];
-
-  //   if (storedNotes.length !== 0) {
-  //     const findUserNotes = storedNotes.filter(
-  //       (note: NoteType) => note.username === context.user?.username
-  //     );
-
-  //     const total = findUserNotes.reduce(
-  //       (acc, user) => acc + Number(user.tracker.time),
-  //       0
-  //     );
-  //     setAmountOfTime(total);
-  //   }
-  // };
-
-  // useEffect(()=>{
-  //   amountChange()
-  // }, [])
+  const WorkingHoursConfig = {
+    'total time' : `${amountOfTime} hours`,
+  };
 
   useEffect(() => {
     if (notes.length !== 0) {
@@ -56,10 +36,9 @@ export const WorkingHours: React.FC<Props> = ({notes}) => {
       <div className='grid text-sm text-slate-600 overflow-hidden'>
         <div className='overflow-hidden'>
           <ul className='p-3'>
-            <li className='flex flex-row'>
-              <span className='font-medium mr-3'>Total time:</span>
-              <span className='font-light'>{`${amountOfTime} hours`}</span>
-            </li>
+            {Object.entries(WorkingHoursConfig).map(([key, value]) => (
+              <InfoField title={key} key={key} fieldValue={value} />
+            ))}
           </ul>
         </div>
       </div>

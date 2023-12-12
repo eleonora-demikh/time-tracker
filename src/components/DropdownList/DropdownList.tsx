@@ -5,13 +5,12 @@ import { UserContext } from '../../context/userContext';
 
 type Props = {
   users: User[];
-  selectedUser: User | null;
   handleClick: (user: User) => void;
 };
 
-export const DropdownList:FC<Props> = ({ users, selectedUser, handleClick }) => {
-  const context = useContext(UserContext);
+export const DropdownList:FC<Props> = ({ users, handleClick }) => {
   const [userChecked, setUserChecked] = useState('')
+  const context = useContext(UserContext);
 
   useEffect(()=>{
     if (context.user?.username !== undefined) {

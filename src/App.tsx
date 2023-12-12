@@ -1,7 +1,7 @@
 import React from "react";
-import { UserInfoPage } from './pages/UserInfoPage';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './layouts/Layout';
+import { UserInfoPage } from './pages/UserInfoPage';
 import { NotesPage } from './pages/NotesPage';
 
 function App() {

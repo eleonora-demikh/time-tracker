@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { PlusMinus } from '../UI/PlusMinus';
-import { ArrowDown } from '../UI/ArrowDown';
-import { Close } from '../UI/Close';
-import { TrackForm } from '../TrackForm/TrackForm';
-import { WorkingHours } from '../WorkingHours/WorkingHours';
+import React, { useState, useEffect } from "react";
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { NoteType } from '../../types/Note';
 import { User } from '../../types/User';
+import { WorkingHours } from '../WorkingHours/WorkingHours';
+import { TrackForm } from '../TrackForm/TrackForm';
+import { PlusMinus } from '../UI/PlusMinus';
+import { ArrowDown } from '../UI/ArrowDown';
+import { Close } from '../UI/Close';
 
 type Props = {
   selectedUser: User,
@@ -40,6 +39,7 @@ export const TimeTracker: React.FC<Props> = ({selectedUser}) => {
           <PlusMinus isVisible={isOpenedTracker} />
         </button>
       </h2>
+      
       {isOpenedTracker && (
         <div className='grid text-sm text-slate-600 overflow-hidden'>
           <WorkingHours notes={notes} />

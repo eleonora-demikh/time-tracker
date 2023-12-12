@@ -36,8 +36,6 @@ export const UserInfoPage: React.FC = () => {
     <>
       <Dropdown
         data={users}
-        handleSelectUser={setSelectedUser}
-        selectedUser={selectedUser}
       />
       <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>
         {!selectedUser ? (

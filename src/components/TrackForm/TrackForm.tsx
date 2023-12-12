@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { formReducer, initialState } from '../../helpers/formReducer';
 import { NoteType } from '../../types/Note';
@@ -11,7 +11,6 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
   const [formData, dispatch] = useReducer(formReducer, initialState);
   const [currentDate, setCurrentDate] = useState('');
   const context = useContext(UserContext);
-  // const currentDate = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     const now = new Date();
@@ -21,10 +20,6 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
       .split("T")[0];
     setCurrentDate(localDate);
   }, []);
-
-  // useEffect(()=>{
-  //   setCurrentDate(newCurrentDate)
-  // }, [newCurrentDate])
 
   const handleFieldChange = (field: string, value: string | number) => {
     dispatch({
@@ -50,20 +45,11 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
       if (existingNoteIndex !== -1) {
         storedNotes[existingNoteIndex] = updatedNote;
         handleAddNote(storedNotes)
-        // localStorage.setItem("notes", JSON.stringify(storedNotes));
       } else {
         handleAddNote(prev => [...prev, updatedNote])
-        // localStorage.setItem(
-        //   "notes",
-        //   JSON.stringify([...storedNotes, updatedNote])
-        // );
       }
     } else {
       handleAddNote((prev) => [...prev, updatedNote]);
-      // localStorage.setItem(
-      //   "notes",
-      //   JSON.stringify([...storedNotes, updatedNote])
-      // );
     }
   };
 
@@ -87,7 +73,6 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
             tracker: formData,
           };
           updateNotes(newNote);
-          // handleChangeTotal((prev: number) => prev + Number(formData.time))
         }
       });
     } catch (error) {
@@ -100,10 +85,10 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='mb-2 border border-slate-100 rounded-lg mt-2 p-2 flex flex-row flex-wrap justify-between'
+      className='mb-2 border border-slate-100 rounded-lg mt-2 p-2 flex flex-row flex-wrap justify-center'
     >
-      <div className='flex flex-col '>
-        <label htmlFor='dateInput' className='text-xs'>
+      <div className='flex flex-col mr-4'>
+        <label htmlFor='dateInput' className='text-xs mt-3'>
           Choose date:
         </label>
         <input
@@ -132,12 +117,12 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
       </div>
 
       <div className='flex flex-col mb-3'>
-        <label htmlFor='comment' className='text-xs'>
+        <label htmlFor='comment' className='text-xs mt-3'>
           Details:
         </label>
         <textarea
           id='comment'
-          className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-full w-60 shrink-0 focus:outline-none'
+          className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-20 w-60 shrink-0 focus:outline-none'
           onChange={(e) => handleFieldChange("details", e.target.value)}
           value={formData.details}
         />

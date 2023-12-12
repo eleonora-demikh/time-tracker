@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { User } from '../../types/User';
 import { PlusMinus } from '../UI/PlusMinus';
+import { AdditionalInfoField } from '../AdditionalInfoField/AdditionalInfoField';
 
 type Props = {
   selectedUser: User | null;
@@ -9,6 +10,17 @@ type Props = {
 
 export const AdditionalInfo:React.FC<Props> =({ selectedUser }) => {
   const [isOpenedInfo, setIsOpenedInfo] = useState(false);
+  const AdditionalInfoConfig = {
+    contacts: {
+      phone: selectedUser?.phone,
+      email: selectedUser?.email,
+      website: selectedUser?.website,
+    },
+    adress: {
+      city: selectedUser?.address.city,
+      street: selectedUser?.address.street,
+    }
+  };
 
   return (
     <section>
@@ -23,58 +35,10 @@ export const AdditionalInfo:React.FC<Props> =({ selectedUser }) => {
         </button>
       </h2>
       {isOpenedInfo && (
-        <div className='grid text-sm text-slate-600 overflow-hidden'>
-          <section className='mb-2'>
-            <h3 className='flex items-center justify-between w-full text-left font-semibold border-b border-slate-100 p-2'>
-              Contacts
-            </h3>
-            <div className='grid text-sm text-slate-600 overflow-hidden'>
-              <div className='overflow-hidden'>
-                <ul className='p-3'>
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Phone:</span>
-                    <span className='font-light'>{selectedUser?.phone}</span>
-                  </li>
-
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Website:</span>
-                    <a
-                      className='font-light'
-                      href={selectedUser?.website}
-                      target='_blank'
-                    >
-                      {selectedUser?.website}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className='mb-2'>
-            <h3 className='flex items-center justify-between w-full text-left font-semibold border-b border-slate-100 p-2'>
-              Address
-            </h3>
-            <div className='grid text-sm text-slate-600 overflow-hidden'>
-              <div className='overflow-hidden'>
-                <ul className='p-3'>
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>City:</span>
-                    <span className='font-light'>
-                      {selectedUser?.address.city}
-                    </span>
-                  </li>
-
-                  <li className='flex flex-row'>
-                    <span className='font-medium mr-3'>Street:</span>
-                    <span className='font-light'>
-                      {`${selectedUser?.address.street} str.`}
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
+        <div className='text-sm text-slate-600 mb-2 border border-slate-100 rounded-lg mt-2 overflow-hidden'>
+          {Object.entries(AdditionalInfoConfig).map(([key, value]) => (
+            <AdditionalInfoField title={key} key={key} fieldValue={value} />
+          ))}
         </div>
       )}
     </section>

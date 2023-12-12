@@ -16,11 +16,12 @@ export const Header: React.FC = () => {
       </NavLink>
       <NavLink
         to='/notes'
-        className={({ isActive }) =>
-          `${
-            isActive ? "border-b-indigo-300" : ""
+        className={({ isActive }) => 
+        (`${isActive 
+            ? "border-b-indigo-300" 
+            : "" 
           } mr-12 border border-transparent hover:border-b-indigo-300`
-        }
+        )}
       >
         Notes
       </NavLink>

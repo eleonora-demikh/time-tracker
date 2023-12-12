@@ -1,11 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../context/userContext";
-import { User } from "../types/User";
-import { MainInfo } from "../components/MainInfo/MainInfo";
-import { AdditionalInfo } from "../components/AdditionalInfo/AdditionalInfo";
-import { TimeTracker } from "../components/TimeTracker/TimeTracker";
-import { Note } from '../components/Note/Note';
+import React, { useEffect, useState } from "react";
 import { NoteType } from '../types/Note';
+import { Note } from '../components/Note/Note';
 
 export const NotesPage: React.FC = () => {
   const [notes, setNotes] = useState<NoteType[] | []>([])
@@ -18,20 +13,6 @@ export const NotesPage: React.FC = () => {
 
     setNotes(storedNotes);
   }, []);
-
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === "notes") {
-        setNotes(e.newValue);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);  
 
   return (
     <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>

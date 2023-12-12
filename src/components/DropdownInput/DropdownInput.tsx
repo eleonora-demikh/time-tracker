@@ -38,6 +38,7 @@ export const DropdownInput: React.FC<Props> = ({
         ref={inputRef}
         className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 pr-6 h-7 w-60 shrink-0 focus:outline-none'
         type='text'
+        name='user'
         placeholder={placeholder}
         value={value}
         onChange={handleQueryChange}

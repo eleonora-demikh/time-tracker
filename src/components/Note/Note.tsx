@@ -1,7 +1,7 @@
-import React, { ReactNode, useState } from "react";
-// import { User } from "../../types/User";
-import { PlusMinus } from '../UI/PlusMinus';
+import React, { useState } from "react";
 import { NoteType } from '../../types/Note';
+import { PlusMinus } from '../UI/PlusMinus';
+import { InfoField } from '../InfoField/InfoField';
 
 type Props = {
   note: NoteType
@@ -9,6 +9,12 @@ type Props = {
 
 export const Note: React.FC<Props> = ({ note }) => {
   const [isOpened, setIsOpened] = useState(false);
+  const NotesConfig = {
+    name: note.name,
+    project: note.project,
+    'time spent': `${note.tracker.time} hours`,
+    details: note.tracker.details
+  }
 
   return (
     <section className='mt-2'>
@@ -24,27 +30,9 @@ export const Note: React.FC<Props> = ({ note }) => {
         <div className='text-sm text-slate-600 overflow-hidden border border-slate-200 rounded-lg mt-1'>
           <div className='overflow-hidden'>
             <ul className='p-3'>
-              <li className='flex flex-row'>
-                <span className='font-medium mr-3'>Name:</span>
-                <span className='font-light'>{note.name}</span>
-              </li>
-
-              <li className='flex flex-row'>
-                <span className='font-medium mr-3'>Project:</span>
-                <span className='font-light'>{note.project}</span>
-              </li>
-
-              <li className='flex flex-row'>
-                <span className='font-medium mr-3'>Time spent</span>
-                <span className='font-light'>{`${note.tracker.time} hours`}</span>
-              </li>
-
-              <li className='flex flex-row'>
-                <span className='font-medium mr-3'>Details</span>
-                <span className='font-light'>
-                  {note.tracker.details}
-                </span>
-              </li>
+              {Object.entries(NotesConfig).map(([key, value]) => (
+                <InfoField title={key} key={key} fieldValue={value} />
+              ))}
             </ul>
           </div>
         </div>

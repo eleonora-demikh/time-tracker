@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 type Props = {
-  className?: string | "";
+  className?: string | '';
 };
 
 export const Close: FC<Props> = ({ className }) => {

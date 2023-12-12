@@ -2,18 +2,16 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { useSearchParams } from 'react-router-dom';
 import useClickOutside from '../../hooks/useClickOutside';
 import { User } from '../../types/User';
+import { UserContext } from '../../context/userContext';
 import { filterUsers } from '../../helpers/usersFilter';
 import { DropdownList } from '../DropdownList/DropdownList';
-import { UserContext } from '../../context/userContext';
 import { DropdownInput } from '../DropdownInput/DropdownInput';
 
 type Props = {
   data: User[],
-  handleSelectUser: React.Dispatch<React.SetStateAction<User | null>>,
-  selectedUser: User | null,
 };
 
-export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}) => {
+export const Dropdown: React.FC<Props> = ({ data }) => {
   const context = useContext(UserContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,8 +28,6 @@ export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}
       setPlaceholder("Select the team member...");
     }
   }, []);
-
-
 
   const visibleUsers = useMemo(() => {
     return filterUsers(query, data)
@@ -60,14 +56,13 @@ export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}
     setSearchParams(newSearchParams);
   };
 
-  const handleSelectItem = (user: User) => {
+  const handleSelectItem = useCallback((user: User) => {
     context.updateUser(user);
-    handleSelectUser(user);
     setPlaceholder(user.username);
     setQuery('');
     updateSearchParams(user.username);
     setIsOpen(false);
-  };
+  }, []);
 
   return (
     <div className='p-4 lg:px-8 relative w-full flex justify-center'>
@@ -83,7 +78,6 @@ export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}
         {isOpen && (
           <DropdownList
             users={visibleUsers}
-            selectedUser={selectedUser}
             handleClick={handleSelectItem}
           />
         )}
