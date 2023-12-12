@@ -87,7 +87,7 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
       onSubmit={handleSubmit}
       className='mb-2 border border-slate-100 rounded-lg mt-2 p-2 flex flex-row flex-wrap justify-center'
     >
-      <div className='flex flex-col mr-4'>
+      <div className='flex flex-col px-4'>
         <label htmlFor='dateInput' className='text-xs mt-3'>
           Choose date:
         </label>
@@ -102,7 +102,7 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
         />
 
         <label htmlFor='timeInput' className='text-xs mt-3'>
-          Time spent:
+          Time spent, h:
         </label>
         <input
           id='timeInput'
@@ -116,7 +116,7 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
         />
       </div>
 
-      <div className='flex flex-col mb-3'>
+      <div className='flex flex-col px-4'>
         <label htmlFor='comment' className='text-xs mt-3'>
           Details:
         </label>

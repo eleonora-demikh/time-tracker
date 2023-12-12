@@ -1,6 +1,6 @@
 export type FormState = {
   date: string;
-  time: number;
+  time: string | number;
   details: string;
 };
 
@@ -11,7 +11,7 @@ type FormAction =
 
 export const initialState: FormState = {
   date: '',
-  time: 0,
+  time: '',
   details: '',
 };
 
