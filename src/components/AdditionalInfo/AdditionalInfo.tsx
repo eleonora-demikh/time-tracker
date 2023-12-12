@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { PlusMinus } from '../UI/PlusMinus';
 import { User } from '../../types/User';
+import { PlusMinus } from '../UI/PlusMinus';
 
 type Props = {
   selectedUser: User | null;

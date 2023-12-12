@@ -3,10 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import useClickOutside from '../../hooks/useClickOutside';
 import { User } from '../../types/User';
 import { filterUsers } from '../../helpers/usersFilter';
-import { ArrowDown } from '../UI/ArrowDown';
-import { Close } from '../UI/Close';
 import { DropdownList } from '../DropdownList/DropdownList';
 import { UserContext } from '../../context/userContext';
+import { DropdownInput } from '../DropdownInput/DropdownInput';
 
 type Props = {
   data: User[],
@@ -19,21 +18,20 @@ export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [placeholder, setPlaceholder] = useState('');
-  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [query, setQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (context.user?.username !== undefined) {
       updateSearchParams(context.user?.username as string);
+      setPlaceholder(context.user.username);
+    } else {
+      updateSearchParams("");
+      setPlaceholder("Select the team member...");
     }
-    setPlaceholder(searchParams.get("user") || "Select the team member...");
   }, []);
 
-  useEffect(() => {
-    if (context.user === undefined)
-    updateSearchParams('')
-  }, [context.user]);
+
 
   const visibleUsers = useMemo(() => {
     return filterUsers(query, data)
@@ -71,24 +69,16 @@ export const Dropdown: React.FC<Props> = ({data, handleSelectUser, selectedUser}
     setIsOpen(false);
   };
 
-  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = event.target.value.trim();
-    setQuery(newQuery);
-  };
-
   return (
     <div className='p-4 lg:px-8 relative w-full flex justify-center'>
       <div ref={dropdownRef}>
-        <div className='flex space-x-5 relative w-320' onClick={toggleDropdown}>
-          <input
-            className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 pr-6 h-7 w-60 shrink-0 focus:outline-none'
-            type='text'
-            placeholder={placeholder}
-            value={query}
-            onChange={handleQueryChange}
-          />
-          {!isOpen ? <ArrowDown /> : <Close />}
-        </div>
+        <DropdownInput
+          handleToggle={toggleDropdown}
+          handleChange={setQuery}
+          value={query}
+          placeholder={placeholder}
+          isOpen={isOpen}
+        />
 
         {isOpen && (
           <DropdownList

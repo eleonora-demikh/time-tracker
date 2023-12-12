@@ -42,7 +42,7 @@ export const NotesPage: React.FC = () => {
       ? (
         <p className='m-2'>No notes yet</p>
       ) : (
-        notes.map(note => <Note note={note} key={note.id}/>)
+        notes.reverse().map(note => <Note note={note} key={note.id}/>)
       )}
     </article>
   );

@@ -28,35 +28,28 @@ export const UserInfoPage: React.FC = () => {
     fetchData();
   }, []);
 
-    // useEffect(() => {
-    //   selectedUser = searchParams.get("user") || "";
-    //   let user;
-
-    //   if (selectedUser.length > 0) {
-    //     user = users.find((u) => u.username === selectedUser);
-    //     context.updateUser(user);
-    //   }
-    // }, []);
-
   useEffect(() => {
     setSelectedUser(context.user);
-
   }, [context.user?.username]);
 
   return (
     <>
-      <Dropdown data={users} handleSelectUser={setSelectedUser} selectedUser={selectedUser}/>
-      {!selectedUser ? (
-        <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>
-          Select the user first
-        </article>
-      ) : (
-        <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>
-          <MainInfo selectedUser={selectedUser} />
-          <AdditionalInfo selectedUser={selectedUser} />
-          <TimeTracker />
-        </article>
-      )}
+      <Dropdown
+        data={users}
+        handleSelectUser={setSelectedUser}
+        selectedUser={selectedUser}
+      />
+      <article className='flex flex-col justify-center m-2 p-4 lg:px-8 border rounded-lg border-slate-200'>
+        {!selectedUser ? (
+          <h3>Select the user first</h3>
+        ) : (
+          <>
+            <MainInfo selectedUser={selectedUser} />
+            <AdditionalInfo selectedUser={selectedUser} />
+            <TimeTracker selectedUser={selectedUser} />
+          </>
+        )}
+      </article>
     </>
   );
 };

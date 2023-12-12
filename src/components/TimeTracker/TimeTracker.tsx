@@ -7,8 +7,13 @@ import { TrackForm } from '../TrackForm/TrackForm';
 import { WorkingHours } from '../WorkingHours/WorkingHours';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { NoteType } from '../../types/Note';
+import { User } from '../../types/User';
 
-export const TimeTracker: React.FC = () => {
+type Props = {
+  selectedUser: User,
+}
+
+export const TimeTracker: React.FC<Props> = ({selectedUser}) => {
   const [isOpenedTracker, setIsOpenedTracker] = useState(false);
   const [isOpenedLogs, setIsOpenedLogs] = useState(false);
   const [notes, setNotes] = useLocalStorage("notes", []);
@@ -21,7 +26,7 @@ export const TimeTracker: React.FC = () => {
       : [];
 
     setNotes(storedNotes);
-  }, []);
+  }, [selectedUser]);
 
   return (
     <section>

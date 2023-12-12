@@ -8,9 +8,23 @@ type Props = {
 };
 
 export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
-  const currentDate = new Date().toISOString().split("T")[0];
   const [formData, dispatch] = useReducer(formReducer, initialState);
+  const [currentDate, setCurrentDate] = useState('');
   const context = useContext(UserContext);
+  // const currentDate = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    const localDate = new Date(now.getTime() - offset * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
+    setCurrentDate(localDate);
+  }, []);
+
+  // useEffect(()=>{
+  //   setCurrentDate(newCurrentDate)
+  // }, [newCurrentDate])
 
   const handleFieldChange = (field: string, value: string | number) => {
     dispatch({
@@ -97,9 +111,9 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
           className='border rounded text-slate-800 border-slate-200 focus:border-indigo-300 shadow-sm p-2 h-7 w-60 shrink-0 focus:outline-none'
           type='date'
           max={currentDate}
-          required
           value={formData.date}
           onChange={(e) => handleFieldChange("date", e.target.value)}
+          required
         />
 
         <label htmlFor='timeInput' className='text-xs mt-3'>
