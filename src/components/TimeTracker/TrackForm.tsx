@@ -10,7 +10,7 @@ type Props = {
 export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
   const [formData, dispatch] = useReducer(formReducer, initialState);
   const [currentDate, setCurrentDate] = useState('');
-  const context = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const now = new Date();
@@ -57,22 +57,22 @@ export const TrackForm: React.FC<Props> = ({ handleAddNote }) => {
     e.preventDefault();
 
     try {
-      const URL = `https://jsonplaceholder.typicode.com/users/${context.user?.id}`;
+      const URL = `https://jsonplaceholder.typicode.com/users/${user?.id}`;
 
       const response = await fetch(URL, {
         method: "PUT",
-        body: JSON.stringify({ ...context.user, tracker: formData }),
+        body: JSON.stringify({ ...user, tracker: formData }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
       });
 
-      if (response.ok && context.user) {
+      if (response.ok && user) {
         const newNote: NoteType = {
           id: Date.now(),
-          name: context.user?.name,
-          username: context.user?.username,
-          project: context.user?.company.name,
+          name: user?.name,
+          username: user?.username,
+          project: user?.company.name,
           tracker: formData,
         };
         updateNotes(newNote);
